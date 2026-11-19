@@ -8,6 +8,7 @@ import { BUSINESS_TYPE_LABEL, categoryLabel } from "@/lib/categories";
 import { BusinessAvatar } from "@/components/business-avatar";
 import { OpeningHours } from "@/components/opening-hours";
 import { SlotCard } from "@/components/slot-card";
+import { PageBand } from "@/components/page-band";
 import { SlotsMapLoader } from "@/components/slots-map-loader";
 import { PinIcon, StarIcon } from "@/components/icons";
 
@@ -28,32 +29,35 @@ export default async function BusinessPage({ params }: Props) {
   const slots = await searchSlots({ businessId: b.id });
 
   return (
-    <div className="container-page py-8 sm:py-12">
+    <>
+    <PageBand>
       <header className="flex flex-col gap-5 sm:flex-row sm:items-center">
         <BusinessAvatar name={b.name} logoUrl={b.logoUrl} size="h-20 w-20 text-3xl" />
         <div>
-          <p className="eyebrow">{BUSINESS_TYPE_LABEL[b.type]}</p>
-          <h1 className="mt-1 text-4xl text-ink sm:text-6xl">{b.name}</h1>
-          <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-muted">
+          <p className="eyebrow text-on-adam-muted">{BUSINESS_TYPE_LABEL[b.type]}</p>
+          <h1 className="mt-1 text-4xl text-on-adam sm:text-6xl">{b.name}</h1>
+          <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-on-adam-muted">
             <span className="inline-flex items-center gap-1">
               <PinIcon className="h-4 w-4" /> {b.address}, {b.postcode}
             </span>
             {b.ratingCount > 0 && (
               <span className="inline-flex items-center gap-1">
-                <StarIcon className="h-3.5 w-3.5 text-adam" />
-                <span className="text-ink">{b.ratingAvg.toFixed(1)}</span> ({b.ratingCount} reviews)
+                <StarIcon className="h-3.5 w-3.5 text-on-adam" />
+                <span className="text-on-adam">{b.ratingAvg.toFixed(1)}</span> ({b.ratingCount} reviews)
               </span>
             )}
           </p>
         </div>
       </header>
+    </PageBand>
+    <div className="container-page flow-root pb-12">
 
       {/* Photo placeholders until businesses can upload images */}
-      <ul className="mt-8 grid grid-cols-3 gap-3" aria-label="Photos">
+      <ul className="relative -mt-8 grid grid-cols-3 gap-3" aria-label="Photos">
         {["Treatment room", "Reception", "Recent work"].map((label, i) => (
           <li
             key={label}
-            className={`flex items-end rounded-[var(--radius-card)] p-4 ${i === 0 ? "col-span-3 h-48 sm:col-span-1 sm:h-56" : "h-32 sm:h-56"} ${i === 1 ? "bg-sage" : "bg-sage-light"}`}
+            className={`flex items-end rounded-[var(--radius-card)] p-4 ${i === 0 ? "col-span-3 h-48 sm:col-span-1 sm:h-56" : "h-32 sm:h-56"} ${i === 1 ? "bg-sage-deep" : "bg-sage"} border border-line`}
             role="img"
             aria-label={`Photo placeholder: ${label}`}
           >
@@ -65,7 +69,7 @@ export default async function BusinessPage({ params }: Props) {
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_340px]">
         <section aria-labelledby="open-slots" className="min-w-0">
           <h2 id="open-slots" className="text-3xl text-ink">
-            Open <em className="italic">slots</em>
+            Open <em className="italic text-adam">slots</em>
           </h2>
           {slots.length === 0 ? (
             <p className="card mt-5 p-8 text-center text-sm text-ink-muted">No open slots right now. Check back soon.</p>
@@ -131,5 +135,6 @@ export default async function BusinessPage({ params }: Props) {
         </aside>
       </div>
     </div>
+    </>
   );
 }

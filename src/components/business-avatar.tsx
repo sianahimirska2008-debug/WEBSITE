@@ -12,7 +12,7 @@ export function BusinessAvatar({ name, logoUrl, size = "h-14 w-14 text-2xl" }: {
     .map((w) => w[0])
     .join("");
   return (
-    <span aria-hidden="true" className={`${size} flex shrink-0 items-center justify-center rounded-2xl bg-sage font-serif text-adam`}>
+    <span aria-hidden="true" className={`${size} flex shrink-0 items-center justify-center rounded-2xl bg-sage-deep font-serif text-adam`}>
       {initials}
     </span>
   );

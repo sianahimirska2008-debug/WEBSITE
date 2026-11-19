@@ -9,6 +9,7 @@ import { CANCELLATION_WINDOW_HOURS } from "@/lib/bookings";
 import { distanceKm, kmToMiles, DEFAULT_LOCATION } from "@/lib/geo";
 import { BusinessAvatar } from "@/components/business-avatar";
 import { OpeningHours } from "@/components/opening-hours";
+import { PageBand } from "@/components/page-band";
 import { SlotsMapLoader } from "@/components/slots-map-loader";
 import { ArrowRightIcon, CalendarIcon, ClockIcon, PinIcon, StarIcon } from "@/components/icons";
 
@@ -47,47 +48,52 @@ export default async function SlotDetailPage({ params }: Props) {
   });
 
   return (
-    <div className="container-page py-8 sm:py-12">
-      <nav aria-label="Breadcrumb" className="text-sm text-ink-muted">
+    <>
+    <PageBand>
+      <nav aria-label="Breadcrumb" className="text-sm text-on-adam-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
-            <Link href="/slots" className="hover:text-ink">
+            <Link href="/slots" className="hover:text-on-adam">
               Browse slots
             </Link>
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href={`/slots?category=${slot.treatment.category}`} className="hover:text-ink">
+            <Link href={`/slots?category=${slot.treatment.category}`} className="hover:text-on-adam">
               {categoryLabel(slot.treatment.category)}
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-ink">
+          <li aria-current="page" className="text-on-adam">
             {slot.treatment.name}
           </li>
         </ol>
       </nav>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
-        <div className="min-w-0">
-          <p className="text-sm text-ink-muted">
-            <Link href={`/b/${b.slug}`} className="hover:text-ink">
-              {b.name}
-            </Link>{" "}
-            · {BUSINESS_TYPE_LABEL[b.type]}
-          </p>
-          <h1 className="mt-2 text-4xl leading-tight text-ink sm:text-6xl">{slot.treatment.name}</h1>
-          <p className="mt-3 text-lg text-ink">
-            {formatDay(slot.startsAt)}, <span className="font-medium">{formatTime(slot.startsAt)}</span>
-            <span className="text-ink-muted"> – {formatTime(endsAt)}</span>
-          </p>
+      <div className="lg:max-w-[calc(100%-412px)]">
+          <p className="mt-6 text-sm text-on-adam-muted">
+        <Link href={`/b/${b.slug}`} className="underline-offset-4 hover:text-on-adam hover:underline">
+          {b.name}
+        </Link>{" "}
+        · {BUSINESS_TYPE_LABEL[b.type]}
+      </p>
+      <h1 className="mt-2 text-4xl leading-tight text-on-adam sm:text-6xl">{slot.treatment.name}</h1>
+      <p className="mt-3 text-lg text-on-adam">
+        {formatDay(slot.startsAt)}, <span className="font-medium">{formatTime(slot.startsAt)}</span>
+        <span className="text-on-adam-muted"> – {formatTime(endsAt)}</span>
+      </p>
 
+      </div>
+    </PageBand>
+    <div className="container-page pb-12 pt-8">
+      <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
+        <div className="min-w-0">
           {/* Mobile price + book */}
-          <div className="card mt-6 p-5 lg:hidden">
+          <div className="on-adam rounded-[var(--radius-card)] bg-adam p-5 text-on-adam lg:hidden">
             <BookingPanel slotId={slot.id} price={slot.price} originalPrice={slot.originalPrice} off={off} bookable={bookable} status={slot.status} />
           </div>
 
-          <section aria-labelledby="details-title" className="card mt-6 p-6 sm:p-8">
+          <section aria-labelledby="details-title" className="card mt-6 p-6 sm:p-8 lg:mt-0">
             <h2 id="details-title" className="text-2xl text-ink">
               Appointment details
             </h2>
@@ -154,7 +160,7 @@ export default async function SlotDetailPage({ params }: Props) {
           {moreSlots.length > 0 && (
             <section aria-labelledby="more-title" className="mt-10">
               <h2 id="more-title" className="text-2xl text-ink">
-                More slots at <em className="italic">{b.name}</em>
+                More slots at <em className="italic text-adam">{b.name}</em>
               </h2>
               <ul className="mt-4 divide-y divide-line rounded-[var(--radius-card)] border border-line bg-card">
                 {moreSlots.map((s) => (
@@ -179,18 +185,19 @@ export default async function SlotDetailPage({ params }: Props) {
         </div>
 
         {/* Desktop sticky booking panel */}
-        <aside className="card sticky top-24 hidden p-6 lg:block" aria-label="Book this slot">
+        <aside className="on-adam sticky top-24 hidden rounded-[var(--radius-card)] bg-adam p-6 text-on-adam lg:block" aria-label="Book this slot">
           <BookingPanel slotId={slot.id} price={slot.price} originalPrice={slot.originalPrice} off={off} bookable={bookable} status={slot.status} />
         </aside>
       </div>
     </div>
+    </>
   );
 }
 
 function Detail({ icon, term, value }: { icon: React.ReactNode; term: string; value: string }) {
   return (
     <div className="flex gap-3">
-      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sage-light text-adam" aria-hidden="true">
+      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-adam text-on-adam" aria-hidden="true">
         {icon}
       </span>
       <div>
@@ -221,26 +228,26 @@ function BookingPanel({
       <div className="flex items-end justify-between gap-3">
         <p className="leading-none">
           <span className="sr-only">Was </span>
-          <s className="text-sm text-ink-muted">{formatPrice(originalPrice)}</s>
+          <s className="text-sm text-on-adam-muted">{formatPrice(originalPrice)}</s>
           <span className="sr-only">, now </span>
-          <span className="mt-1.5 block font-serif text-5xl text-ink">{formatPrice(price)}</span>
+          <span className="mt-1.5 block font-serif text-5xl text-on-adam">{formatPrice(price)}</span>
         </p>
-        {off > 0 && <span className="rounded-full bg-adam px-3 py-1 text-sm font-medium text-on-adam">{off}% off</span>}
+        {off > 0 && <span className="rounded-full bg-on-adam px-3 py-1 text-sm font-medium text-adam">{off}% off</span>}
       </div>
-      {off > 0 && <p className="mt-3 text-sm text-ink-muted">You save {formatPrice(originalPrice - price)} on the standard price.</p>}
+      {off > 0 && <p className="mt-3 text-sm text-on-adam-muted">You save {formatPrice(originalPrice - price)} on the standard price.</p>}
       {bookable ? (
-        <Link href={`/book/${slotId}`} className="btn-primary mt-6 w-full py-3.5 text-base">
+        <Link href={`/book/${slotId}`} className="btn-light mt-6 w-full py-3.5 text-base">
           Book
         </Link>
       ) : (
-        <div className="mt-6 rounded-[var(--radius-field)] bg-sage-light p-4 text-sm text-ink" role="status">
+        <div className="mt-6 rounded-[var(--radius-field)] bg-white/10 p-4 text-sm text-on-adam" role="status">
           {status === "BOOKED" ? "This slot has just been booked." : "This slot is no longer available."}{" "}
           <Link href="/slots" className="font-medium underline">
             Find another slot
           </Link>
         </div>
       )}
-      <p className="mt-4 text-xs leading-relaxed text-ink-muted">Pay now to secure the slot. Free cancellation up to {CANCELLATION_WINDOW_HOURS} hours before.</p>
+      <p className="mt-4 text-xs leading-relaxed text-on-adam-muted">Pay now to secure the slot. Free cancellation up to {CANCELLATION_WINDOW_HOURS} hours before.</p>
     </div>
   );
 }

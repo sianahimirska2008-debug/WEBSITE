@@ -20,7 +20,7 @@ export function SlotCard({ slot, headingLevel = "h3" }: { slot: SlotCardData; he
   const day = formatDay(slot.startsAt);
   const time = formatTime(slot.startsAt);
   return (
-    <article className="card group relative flex h-full flex-col p-5 transition-colors hover:border-line-strong">
+    <article className="card group relative flex h-full flex-col p-5 transition-colors hover:border-adam">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="truncate text-sm text-ink-muted">{slot.business.name}</p>
@@ -63,7 +63,7 @@ export function SlotCard({ slot, headingLevel = "h3" }: { slot: SlotCardData; he
           <span className="sr-only">Was </span>
           <s className="block text-xs text-ink-muted">{formatPrice(slot.originalPrice)}</s>
           <span className="sr-only">, now </span>
-          <span className="mt-1 block text-xl font-semibold text-ink">{formatPrice(slot.price)}</span>
+          <span className="mt-1 block text-xl font-semibold text-adam">{formatPrice(slot.price)}</span>
         </p>
       </div>
     </article>

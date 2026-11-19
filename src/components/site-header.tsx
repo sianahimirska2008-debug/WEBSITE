@@ -41,9 +41,9 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur supports-[backdrop-filter]:bg-canvas/85">
+    <header className="on-adam sticky top-0 z-40 border-b border-line-on-adam bg-adam text-on-adam">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Logo />
+        <Logo inverted />
 
         <nav aria-label="Main" className="hidden md:block">
           <ul className="flex items-center gap-1">
@@ -52,7 +52,7 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className="rounded-full px-3.5 py-2 text-sm text-ink-muted transition-colors hover:text-ink aria-[current=page]:text-ink aria-[current=page]:font-medium"
+                  className="rounded-full px-3.5 py-2 text-sm text-on-adam-muted transition-colors hover:text-on-adam aria-[current=page]:bg-white/10 aria-[current=page]:font-medium aria-[current=page]:text-on-adam"
                 >
                   {item.label}
                 </Link>
@@ -65,20 +65,20 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
           {user ? (
             <>
               {accountLink && (
-                <Link href={accountLink.href} className="rounded-full px-3.5 py-2 text-sm font-medium text-ink hover:bg-sage-light">
+                <Link href={accountLink.href} className="rounded-full px-3.5 py-2 text-sm font-medium text-on-adam hover:bg-white/10">
                   {accountLink.label}
                 </Link>
               )}
-              <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary">
+              <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="btn border border-line-on-adam text-on-adam hover:border-on-adam">
                 Log out
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="rounded-full px-3.5 py-2 text-sm font-medium text-ink hover:bg-sage-light">
+              <Link href="/login" className="rounded-full px-3.5 py-2 text-sm font-medium text-on-adam hover:bg-white/10">
                 Log in
               </Link>
-              <Link href="/business#join" className="btn-primary">
+              <Link href="/business#join" className="btn-light">
                 List your business
               </Link>
             </>
@@ -88,7 +88,7 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
         <button
           ref={buttonRef}
           type="button"
-          className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full hover:bg-sage-light md:hidden"
+          className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full text-on-adam hover:bg-white/10 md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen((o) => !o)}
@@ -100,7 +100,7 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
         </button>
       </div>
 
-      <div id="mobile-menu" hidden={!open} className="border-t border-line bg-canvas md:hidden">
+      <div id="mobile-menu" hidden={!open} className="border-t border-line-on-adam bg-adam md:hidden">
         <nav aria-label="Mobile" className="container-page py-4">
           <ul className="flex flex-col">
             {NAV.map((item) => (
@@ -108,7 +108,7 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className="block border-b border-line py-3.5 text-base text-ink"
+                  className="block border-b border-line-on-adam py-3.5 text-base text-on-adam"
                 >
                   {item.label}
                 </Link>
@@ -116,7 +116,7 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
             ))}
             {accountLink && (
               <li>
-                <Link href={accountLink.href} className="block border-b border-line py-3.5 text-base text-ink">
+                <Link href={accountLink.href} className="block border-b border-line-on-adam py-3.5 text-base text-on-adam">
                   {accountLink.label}
                 </Link>
               </li>
@@ -124,15 +124,15 @@ export function SiteHeader({ user }: { user: HeaderUser }) {
           </ul>
           <div className="mt-5 flex flex-col gap-3">
             {user ? (
-              <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary w-full py-3">
+              <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="btn w-full border border-line-on-adam py-3 text-on-adam">
                 Log out
               </button>
             ) : (
               <>
-                <Link href="/business#join" className="btn-primary w-full py-3">
+                <Link href="/business#join" className="btn-light w-full py-3">
                   List your business
                 </Link>
-                <Link href="/login" className="btn-secondary w-full py-3">
+                <Link href="/login" className="btn w-full border border-line-on-adam py-3 text-on-adam">
                   Log in
                 </Link>
               </>

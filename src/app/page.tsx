@@ -41,13 +41,14 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section aria-labelledby="hero-title" className="container-page pb-10 pt-12 sm:pt-20 md:pb-14">
+      <section aria-labelledby="hero-title" className="on-adam bg-adam text-on-adam">
+        <div className="container-page pb-12 pt-12 sm:pb-16 sm:pt-20">
         <div className="max-w-4xl">
-          <p className="eyebrow">Spare appointments across London</p>
-          <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-ink sm:text-6xl md:text-7xl">
-            Beautiful appointments, <span className="whitespace-nowrap"><em className="italic text-adam">for less</em>.</span>
+          <p className="eyebrow text-on-adam-muted">Spare appointments across London</p>
+          <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-on-adam sm:text-6xl md:text-7xl">
+            Beautiful appointments, <span className="whitespace-nowrap"><em className="italic text-accent-on-adam">for less</em>.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-on-adam-muted sm:text-lg">
             Salons, beauty studios and barbers post their free slots at a discount. You book the one that suits you.
           </p>
         </div>
@@ -56,23 +57,24 @@ export default async function HomePage() {
         </div>
         <div className="mt-6">
           <h2 className="sr-only">Browse by treatment</h2>
-          <CategoryPills />
+          <CategoryPills onDark />
+        </div>
         </div>
       </section>
 
       {/* Available today */}
-      <section aria-labelledby="today-title" className="border-t border-line py-14 sm:py-20">
+      <section aria-labelledby="today-title" className="py-14 sm:py-20">
         <div className="container-page">
           <div className="flex items-end justify-between gap-4">
             <div>
               <h2 id="today-title" className="text-3xl text-ink sm:text-4xl">
                 {showingToday ? (
                   <>
-                    Available <em className="italic">today</em> near you
+                    Available <em className="italic text-adam">today</em> near you
                   </>
                 ) : (
                   <>
-                    Next available <em className="italic">near you</em>
+                    Next available <em className="italic text-adam">near you</em>
                   </>
                 )}
               </h2>
@@ -101,23 +103,23 @@ export default async function HomePage() {
       </section>
 
       {/* How it works */}
-      <section aria-labelledby="how-title" className="border-t border-line py-14 sm:py-20">
+      <section aria-labelledby="how-title" className="on-adam bg-adam py-14 text-on-adam sm:py-20">
         <div className="container-page">
-          <p className="eyebrow">How it works</p>
-          <h2 id="how-title" className="mt-3 max-w-xl text-3xl text-ink sm:text-4xl">
-            Three steps to a <em className="italic">better-value</em> appointment
+          <p className="eyebrow text-on-adam-muted">How it works</p>
+          <h2 id="how-title" className="mt-3 max-w-xl text-3xl text-on-adam sm:text-4xl">
+            Three steps to a <em className="italic text-accent-on-adam">better-value</em> appointment
           </h2>
           <ol className="mt-10 grid gap-4 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="card p-6 sm:p-7">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sage font-serif text-xl text-adam" aria-hidden="true">
+              <li key={step.title} className="rounded-[var(--radius-card)] border border-line-on-adam bg-white/[0.04] p-6 sm:p-7">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-on-adam font-serif text-xl text-adam" aria-hidden="true">
                   {i + 1}
                 </span>
-                <h3 className="mt-5 text-2xl text-ink">
+                <h3 className="mt-5 text-2xl text-on-adam">
                   <span className="sr-only">Step {i + 1}: </span>
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{step.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-on-adam-muted">{step.body}</p>
               </li>
             ))}
           </ol>
@@ -125,16 +127,16 @@ export default async function HomePage() {
       </section>
 
       {/* Why Gettable */}
-      <section aria-labelledby="why-title" className="border-t border-line py-14 sm:py-20">
+      <section aria-labelledby="why-title" className="py-14 sm:py-20">
         <div className="container-page">
           <p className="eyebrow">Why Gettable</p>
           <h2 id="why-title" className="mt-3 max-w-xl text-3xl text-ink sm:text-4xl">
-            The same great appointment, <em className="italic">just gettable</em>
+            The same great appointment, <em className="italic text-adam">just gettable</em>
           </h2>
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {BENEFITS.map((b) => (
               <li key={b.title} className="card p-6">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-adam" aria-hidden="true">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-adam text-on-adam" aria-hidden="true">
                   <CheckIcon />
                 </span>
                 <h3 className="mt-5 text-xl text-ink">{b.title}</h3>
@@ -146,12 +148,12 @@ export default async function HomePage() {
       </section>
 
       {/* For businesses */}
-      <section aria-labelledby="biz-title" className="bg-sage py-14 sm:py-20">
+      <section aria-labelledby="biz-title" className="bg-sage-deep py-14 sm:py-20">
         <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div>
             <p className="eyebrow">For businesses</p>
             <h2 id="biz-title" className="mt-3 text-3xl text-ink sm:text-5xl">
-              Empty chairs, <em className="italic">filled</em>.
+              Empty chairs, <em className="italic text-adam">filled</em>.
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-ink-muted">
               Gettable helps independent salons, beauty studios and barbers turn spare time into income, without discounting your whole menu.
@@ -167,7 +169,7 @@ export default async function HomePage() {
           </div>
           <ul className="grid gap-3">
             {BUSINESS_POINTS.map((p) => (
-              <li key={p.title} className="flex gap-4 rounded-[var(--radius-card)] border border-line/70 bg-card p-5">
+              <li key={p.title} className="flex gap-4 rounded-[var(--radius-card)] bg-card p-5">
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-adam text-on-adam" aria-hidden="true">
                   <CheckIcon className="h-4 w-4" />
                 </span>
@@ -185,14 +187,15 @@ export default async function HomePage() {
       <section aria-labelledby="testimonials-title" className="py-14 sm:py-20">
         <div className="container-page">
           <h2 id="testimonials-title" className="text-3xl text-ink sm:text-4xl">
-            What people <em className="italic">say</em>
+            What people <em className="italic text-adam">say</em>
           </h2>
           <p className="mt-2 text-sm text-ink-muted">Sample testimonials for illustration. Names and quotes are placeholders.</p>
           <ul className="mt-10 grid gap-4 md:grid-cols-3">
             {TESTIMONIALS.map((t) => (
               <li key={t.name} className="card flex flex-col p-6 sm:p-7">
                 <figure className="flex h-full flex-col">
-                  <blockquote className="font-serif text-2xl leading-snug text-ink">&ldquo;{t.quote}&rdquo;</blockquote>
+                  <span aria-hidden="true" className="font-serif text-5xl leading-none text-adam">&ldquo;</span>
+                  <blockquote className="-mt-3 font-serif text-2xl leading-snug text-ink">{t.quote}</blockquote>
                   <figcaption className="mt-auto pt-6 text-sm">
                     <span className="font-medium text-ink">{t.name}</span>
                     <span className="text-ink-muted"> · {t.detail}</span>
@@ -205,10 +208,10 @@ export default async function HomePage() {
       </section>
 
       {/* Closing CTA */}
-      <section aria-labelledby="cta-title" className="on-adam bg-adam text-on-adam">
+      <section aria-labelledby="cta-title" className="on-adam border-b border-line-on-adam bg-adam text-on-adam">
         <div className="container-page flex flex-col items-start gap-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between">
           <h2 id="cta-title" className="max-w-2xl text-4xl leading-tight sm:text-5xl">
-            Your next appointment is <em className="italic">already waiting</em>.
+            Your next appointment is <em className="italic text-accent-on-adam">already waiting</em>.
           </h2>
           <div className="flex flex-wrap gap-3">
             <Link href="/slots" className="btn-light px-6 py-3">

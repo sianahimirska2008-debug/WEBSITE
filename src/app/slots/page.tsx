@@ -7,6 +7,7 @@ import { formatDay, formatTime, londonDateKey } from "@/lib/time";
 import { BrowseFilters, type FilterValues } from "@/components/browse-filters";
 import { FiltersPanel, SortSelect } from "@/components/filters-panel";
 import { SlotCard } from "@/components/slot-card";
+import { PageBand } from "@/components/page-band";
 import { SlotsMapLoader } from "@/components/slots-map-loader";
 import type { MapBusiness } from "@/components/slots-map";
 
@@ -89,14 +90,17 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
   const heading = filters.category ? `${categoryLabel(filters.category)} slots` : filters.today ? "Slots today" : "All open slots";
 
   return (
-    <div className="container-page py-8 sm:py-12">
-      <header className="max-w-2xl">
-        <p className="eyebrow">Browse</p>
-        <h1 className="mt-2 text-4xl text-ink sm:text-5xl">
-          {heading.split(" ").slice(0, -1).join(" ")} <em className="italic">{heading.split(" ").slice(-1)}</em>
-        </h1>
-      </header>
-
+    <>
+      <PageBand>
+        <header className="max-w-2xl">
+          <p className="eyebrow text-on-adam-muted">Browse</p>
+          <h1 className="mt-2 text-4xl text-on-adam sm:text-6xl">
+            {heading.split(" ").slice(0, -1).join(" ")} <em className="italic text-accent-on-adam">{heading.split(" ").slice(-1)}</em>
+          </h1>
+          <p className="mt-3 text-on-adam-muted">Spare appointments, posted by the businesses themselves. Prices include the discount.</p>
+        </header>
+      </PageBand>
+    <div className="container-page py-8 sm:py-10">
       <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr]">
         <aside aria-label="Filters">
           <FiltersPanel activeCount={activeCount}>
@@ -107,7 +111,7 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
         <section aria-labelledby="results-heading" className="min-w-0">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 id="results-heading" className="font-sans text-sm text-ink-muted" aria-live="polite">
-              <span className="font-medium text-ink">{slots.length}</span> {slots.length === 1 ? "slot" : "slots"} available
+              <span className="font-semibold text-adam">{slots.length}</span> {slots.length === 1 ? "slot" : "slots"} available
             </h2>
             <div className="flex items-center gap-3">
               <SortSelect formId="slot-filters" value={filters.sort ?? "soonest"} />
@@ -161,5 +165,6 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
         </section>
       </div>
     </div>
+    </>
   );
 }
