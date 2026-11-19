@@ -113,3 +113,20 @@
     display: none;
   }
 }
+
+/* Leaflet: let our price pills sit on the map without the default white box */
+.gt-marker {
+  background: transparent;
+  border: 0;
+}
+.leaflet-container {
+  font-family: var(--font-sans);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(28, 36, 32, 0.12);
+}
+.leaflet-container a.leaflet-popup-close-button {
+  width: 28px;
+  height: 28px;
+}
