@@ -34,16 +34,16 @@ export default async function BusinessPage({ params }: Props) {
       <header className="flex flex-col gap-5 sm:flex-row sm:items-center">
         <BusinessAvatar name={b.name} logoUrl={b.logoUrl} size="h-20 w-20 text-3xl" />
         <div>
-          <p className="eyebrow text-on-adam-muted">{BUSINESS_TYPE_LABEL[b.type]}</p>
-          <h1 className="mt-1 text-4xl text-on-adam sm:text-6xl">{b.name}</h1>
-          <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-on-adam-muted">
+          <p className="eyebrow text-on-band-muted">{BUSINESS_TYPE_LABEL[b.type]}</p>
+          <h1 className="mt-1 text-4xl text-on-band sm:text-6xl">{b.name}</h1>
+          <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-on-band-muted">
             <span className="inline-flex items-center gap-1">
               <PinIcon className="h-4 w-4" /> {b.address}, {b.postcode}
             </span>
             {b.ratingCount > 0 && (
               <span className="inline-flex items-center gap-1">
-                <StarIcon className="h-3.5 w-3.5 text-on-adam" />
-                <span className="text-on-adam">{b.ratingAvg.toFixed(1)}</span> ({b.ratingCount} reviews)
+                <StarIcon className="h-3.5 w-3.5 text-adam" />
+                <span className="text-on-band">{b.ratingAvg.toFixed(1)}</span> ({b.ratingCount} reviews)
               </span>
             )}
           </p>

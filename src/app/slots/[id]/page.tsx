@@ -50,37 +50,37 @@ export default async function SlotDetailPage({ params }: Props) {
   return (
     <>
     <PageBand>
-      <nav aria-label="Breadcrumb" className="text-sm text-on-adam-muted">
+      <nav aria-label="Breadcrumb" className="text-sm text-on-band-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
-            <Link href="/slots" className="hover:text-on-adam">
+            <Link href="/slots" className="hover:text-on-band">
               Browse slots
             </Link>
           </li>
           <li aria-hidden="true">/</li>
           <li>
-            <Link href={`/slots?category=${slot.treatment.category}`} className="hover:text-on-adam">
+            <Link href={`/slots?category=${slot.treatment.category}`} className="hover:text-on-band">
               {categoryLabel(slot.treatment.category)}
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-on-adam">
+          <li aria-current="page" className="text-on-band">
             {slot.treatment.name}
           </li>
         </ol>
       </nav>
 
       <div className="lg:max-w-[calc(100%-412px)]">
-          <p className="mt-6 text-sm text-on-adam-muted">
-        <Link href={`/b/${b.slug}`} className="underline-offset-4 hover:text-on-adam hover:underline">
+          <p className="mt-6 text-sm text-on-band-muted">
+        <Link href={`/b/${b.slug}`} className="underline-offset-4 hover:text-on-band hover:underline">
           {b.name}
         </Link>{" "}
         · {BUSINESS_TYPE_LABEL[b.type]}
       </p>
-      <h1 className="mt-2 text-4xl leading-tight text-on-adam sm:text-6xl">{slot.treatment.name}</h1>
-      <p className="mt-3 text-lg text-on-adam">
+      <h1 className="mt-2 text-4xl leading-tight text-on-band sm:text-6xl">{slot.treatment.name}</h1>
+      <p className="mt-3 text-lg text-on-band">
         {formatDay(slot.startsAt)}, <span className="font-medium">{formatTime(slot.startsAt)}</span>
-        <span className="text-on-adam-muted"> – {formatTime(endsAt)}</span>
+        <span className="text-on-band-muted"> – {formatTime(endsAt)}</span>
       </p>
 
       </div>
@@ -89,7 +89,7 @@ export default async function SlotDetailPage({ params }: Props) {
       <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
         <div className="min-w-0">
           {/* Mobile price + book */}
-          <div className="on-adam rounded-[var(--radius-card)] bg-adam p-5 text-on-adam lg:hidden">
+          <div className="rounded-[var(--radius-card)] border border-line-on-band bg-band p-5 text-on-band lg:hidden">
             <BookingPanel slotId={slot.id} price={slot.price} originalPrice={slot.originalPrice} off={off} bookable={bookable} status={slot.status} />
           </div>
 
@@ -185,7 +185,7 @@ export default async function SlotDetailPage({ params }: Props) {
         </div>
 
         {/* Desktop sticky booking panel */}
-        <aside className="on-adam sticky top-24 hidden rounded-[var(--radius-card)] bg-adam p-6 text-on-adam lg:block" aria-label="Book this slot">
+        <aside className="sticky top-24 hidden rounded-[var(--radius-card)] border border-line-on-band bg-band p-6 text-on-band lg:block" aria-label="Book this slot">
           <BookingPanel slotId={slot.id} price={slot.price} originalPrice={slot.originalPrice} off={off} bookable={bookable} status={slot.status} />
         </aside>
       </div>
@@ -228,26 +228,26 @@ function BookingPanel({
       <div className="flex items-end justify-between gap-3">
         <p className="leading-none">
           <span className="sr-only">Was </span>
-          <s className="text-sm text-on-adam-muted">{formatPrice(originalPrice)}</s>
+          <s className="text-sm text-on-band-muted">{formatPrice(originalPrice)}</s>
           <span className="sr-only">, now </span>
-          <span className="mt-1.5 block font-serif text-5xl text-on-adam">{formatPrice(price)}</span>
+          <span className="mt-1.5 block font-serif text-5xl text-on-band">{formatPrice(price)}</span>
         </p>
-        {off > 0 && <span className="rounded-full bg-on-adam px-3 py-1 text-sm font-medium text-adam">{off}% off</span>}
+        {off > 0 && <span className="rounded-full bg-adam px-3 py-1 text-sm font-medium text-on-adam">{off}% off</span>}
       </div>
-      {off > 0 && <p className="mt-3 text-sm text-on-adam-muted">You save {formatPrice(originalPrice - price)} on the standard price.</p>}
+      {off > 0 && <p className="mt-3 text-sm text-on-band-muted">You save {formatPrice(originalPrice - price)} on the standard price.</p>}
       {bookable ? (
-        <Link href={`/book/${slotId}`} className="btn-light mt-6 w-full py-3.5 text-base">
+        <Link href={`/book/${slotId}`} className="btn-primary mt-6 w-full py-3.5 text-base">
           Book
         </Link>
       ) : (
-        <div className="mt-6 rounded-[var(--radius-field)] bg-white/10 p-4 text-sm text-on-adam" role="status">
+        <div className="mt-6 rounded-[var(--radius-field)] bg-white/50 p-4 text-sm text-on-band" role="status">
           {status === "BOOKED" ? "This slot has just been booked." : "This slot is no longer available."}{" "}
           <Link href="/slots" className="font-medium underline">
             Find another slot
           </Link>
         </div>
       )}
-      <p className="mt-4 text-xs leading-relaxed text-on-adam-muted">Pay now to secure the slot. Free cancellation up to {CANCELLATION_WINDOW_HOURS} hours before.</p>
+      <p className="mt-4 text-xs leading-relaxed text-on-band-muted">Pay now to secure the slot. Free cancellation up to {CANCELLATION_WINDOW_HOURS} hours before.</p>
     </div>
   );
 }

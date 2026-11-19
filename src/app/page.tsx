@@ -41,14 +41,14 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section aria-labelledby="hero-title" className="on-adam bg-adam text-on-adam">
+      <section aria-labelledby="hero-title" className="bg-band text-on-band">
         <div className="container-page pb-12 pt-12 sm:pb-16 sm:pt-20">
         <div className="max-w-4xl">
-          <p className="eyebrow text-on-adam-muted">Spare appointments across London</p>
-          <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-on-adam sm:text-6xl md:text-7xl">
-            Beautiful appointments, <span className="whitespace-nowrap"><em className="italic text-accent-on-adam">for less</em>.</span>
+          <p className="eyebrow text-on-band-muted">Spare appointments across London</p>
+          <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-on-band sm:text-6xl md:text-7xl">
+            Beautiful appointments, <span className="whitespace-nowrap"><em className="italic text-adam">for less</em>.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-on-adam-muted sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-on-band-muted sm:text-lg">
             Salons, beauty studios and barbers post their free slots at a discount. You book the one that suits you.
           </p>
         </div>
@@ -103,23 +103,23 @@ export default async function HomePage() {
       </section>
 
       {/* How it works */}
-      <section aria-labelledby="how-title" className="on-adam bg-adam py-14 text-on-adam sm:py-20">
+      <section aria-labelledby="how-title" className="bg-band py-14 text-on-band sm:py-20">
         <div className="container-page">
-          <p className="eyebrow text-on-adam-muted">How it works</p>
-          <h2 id="how-title" className="mt-3 max-w-xl text-3xl text-on-adam sm:text-4xl">
-            Three steps to a <em className="italic text-accent-on-adam">better-value</em> appointment
+          <p className="eyebrow text-on-band-muted">How it works</p>
+          <h2 id="how-title" className="mt-3 max-w-xl text-3xl text-on-band sm:text-4xl">
+            Three steps to a <em className="italic text-adam">better-value</em> appointment
           </h2>
           <ol className="mt-10 grid gap-4 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <li key={step.title} className="rounded-[var(--radius-card)] border border-line-on-adam bg-white/[0.04] p-6 sm:p-7">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-on-adam font-serif text-xl text-adam" aria-hidden="true">
+              <li key={step.title} className="rounded-[var(--radius-card)] border border-line-on-band bg-white/55 p-6 sm:p-7">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-adam font-serif text-xl text-on-adam" aria-hidden="true">
                   {i + 1}
                 </span>
-                <h3 className="mt-5 text-2xl text-on-adam">
+                <h3 className="mt-5 text-2xl text-on-band">
                   <span className="sr-only">Step {i + 1}: </span>
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-on-adam-muted">{step.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-on-band-muted">{step.body}</p>
               </li>
             ))}
           </ol>
@@ -208,16 +208,16 @@ export default async function HomePage() {
       </section>
 
       {/* Closing CTA */}
-      <section aria-labelledby="cta-title" className="on-adam border-b border-line-on-adam bg-adam text-on-adam">
+      <section aria-labelledby="cta-title" className="border-b border-line-on-band bg-band text-on-band">
         <div className="container-page flex flex-col items-start gap-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between">
           <h2 id="cta-title" className="max-w-2xl text-4xl leading-tight sm:text-5xl">
-            Your next appointment is <em className="italic text-accent-on-adam">already waiting</em>.
+            Your next appointment is <em className="italic text-adam">already waiting</em>.
           </h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/slots" className="btn-light px-6 py-3">
+            <Link href="/slots" className="btn-primary px-6 py-3">
               Find a slot
             </Link>
-            <Link href="/business#join" className="btn rounded-full border border-on-adam/40 px-6 py-3 text-on-adam hover:border-on-adam">
+            <Link href="/business#join" className="btn-secondary px-6 py-3">
               List your business
             </Link>
           </div>

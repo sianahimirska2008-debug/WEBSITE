@@ -8,7 +8,6 @@
   /* Brand */
   --color-adam: #34483b;          /* Deep Adam Green */
   --color-adam-hover: #2a3a30;
-  --color-adam-deep: #26352c;     /* footer / deepest green */
   --color-adam-soft: #5b6e61;
 
   /* Surfaces */
@@ -18,17 +17,21 @@
   --color-sage-light: #f1f3ee;
   --color-sage-deep: #d6dfd5;     /* sage section bands */
 
+  /* Pale green bands (header, hero, page headers, footer) */
+  --color-band: #cfdecb;
+  --color-band-deep: #c1d3bc;
+  --color-on-band: #1c2420;       /* 11.3:1 on band */
+  --color-on-band-muted: #3d4c42; /* 6.5:1 on band */
+  --color-line-on-band: rgb(28 36 32 / 0.14);
+
   /* Text */
   --color-ink: #1c2420;           /* near-black */
   --color-ink-muted: #4f5b53;     /* secondary text, 6:1 on canvas */
   --color-on-adam: #f6f5f1;       /* text on Deep Adam Green */
-  --color-on-adam-muted: #c5d0c7; /* secondary text on green, 6.4:1 */
-  --color-accent-on-adam: #b9cbb9;/* italic accent on green */
 
   /* Lines & states */
   --color-line: #dadfd6;          /* thin light borders */
   --color-line-strong: #bfc7bd;
-  --color-line-on-adam: rgb(246 245 241 / 0.18);
   --color-danger: #a33a2c;
   --color-success: #34483b;
 

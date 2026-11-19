@@ -14,7 +14,7 @@ export function CategoryPills({ active, onDark = false }: { active?: string; onD
                 aria-current={isActive ? "true" : undefined}
                 className={`inline-flex items-center rounded-full border px-4 py-2 text-sm transition-colors ${
                   onDark
-                    ? "border-line-on-adam text-on-adam hover:border-on-adam hover:bg-white/5"
+                    ? "border-line-on-band bg-white/45 text-on-band hover:border-adam hover:bg-white/70"
                     : isActive
                       ? "border-adam bg-adam text-on-adam"
                       : "border-line bg-card text-ink hover:border-adam"

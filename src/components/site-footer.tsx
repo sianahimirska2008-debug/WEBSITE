@@ -30,21 +30,21 @@ const COLUMNS = [
 
 export function SiteFooter() {
   return (
-    <footer className="on-adam bg-adam-deep text-on-adam">
+    <footer className="bg-band-deep text-on-band">
       <div className="container-page grid gap-10 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div className="max-w-xs">
-          <Logo inverted />
-          <p className="mt-4 text-sm leading-relaxed text-on-adam-muted">
+          <Logo />
+          <p className="mt-4 text-sm leading-relaxed text-on-band-muted">
             Spare appointments at independent salons, beauty studios and barbers, for less.
           </p>
         </div>
         {COLUMNS.map((col) => (
           <nav key={col.title} aria-label={col.title}>
-            <h2 className="font-sans text-sm font-medium text-on-adam">{col.title}</h2>
+            <h2 className="font-sans text-sm font-medium text-on-band">{col.title}</h2>
             <ul className="mt-4 space-y-3">
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-on-adam-muted hover:text-on-adam">
+                  <Link href={l.href} className="text-sm text-on-band-muted hover:text-on-band">
                     {l.label}
                   </Link>
                 </li>
@@ -53,8 +53,8 @@ export function SiteFooter() {
           </nav>
         ))}
       </div>
-      <div className="border-t border-line-on-adam">
-        <div className="container-page flex flex-col gap-2 py-6 text-xs text-on-adam-muted sm:flex-row sm:justify-between">
+      <div className="border-t border-line-on-band">
+        <div className="container-page flex flex-col gap-2 py-6 text-xs text-on-band-muted sm:flex-row sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Gettable. Prices in GBP.</p>
           <p>Made in London.</p>
         </div>

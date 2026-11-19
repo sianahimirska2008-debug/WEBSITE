@@ -93,11 +93,11 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
     <>
       <PageBand>
         <header className="max-w-2xl">
-          <p className="eyebrow text-on-adam-muted">Browse</p>
-          <h1 className="mt-2 text-4xl text-on-adam sm:text-6xl">
-            {heading.split(" ").slice(0, -1).join(" ")} <em className="italic text-accent-on-adam">{heading.split(" ").slice(-1)}</em>
+          <p className="eyebrow text-on-band-muted">Browse</p>
+          <h1 className="mt-2 text-4xl text-on-band sm:text-6xl">
+            {heading.split(" ").slice(0, -1).join(" ")} <em className="italic text-adam">{heading.split(" ").slice(-1)}</em>
           </h1>
-          <p className="mt-3 text-on-adam-muted">Spare appointments, posted by the businesses themselves. Prices include the discount.</p>
+          <p className="mt-3 text-on-band-muted">Spare appointments, posted by the businesses themselves. Prices include the discount.</p>
         </header>
       </PageBand>
     <div className="container-page py-8 sm:py-10">
@@ -119,14 +119,14 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
                 <Link
                   href={withParams(sp, { view: undefined })}
                   aria-current={view === "list" ? "page" : undefined}
-                  className="rounded-full px-3.5 py-1.5 text-sm text-ink-muted aria-[current=page]:bg-adam aria-[current=page]:text-on-adam"
+                  className="rounded-full px-3.5 py-1.5 text-sm text-ink-muted aria-[current=page]:bg-adam aria-[current=page]:text-on-band"
                 >
                   List
                 </Link>
                 <Link
                   href={withParams(sp, { view: "map" })}
                   aria-current={view === "map" ? "page" : undefined}
-                  className="rounded-full px-3.5 py-1.5 text-sm text-ink-muted aria-[current=page]:bg-adam aria-[current=page]:text-on-adam"
+                  className="rounded-full px-3.5 py-1.5 text-sm text-ink-muted aria-[current=page]:bg-adam aria-[current=page]:text-on-band"
                 >
                   Map
                 </Link>

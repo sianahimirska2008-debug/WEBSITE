@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "Discounted spare appointments at independent salons, beauty studios and barbers near you. Book last-minute slots for less.",
 };
 
-export const viewport: Viewport = { themeColor: "#34483b" };
+export const viewport: Viewport = { themeColor: "#cfdecb" };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
