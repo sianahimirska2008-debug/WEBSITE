@@ -1,0 +1,151 @@
+// Gettable data model.
+// SQLite for local dev. To switch to Postgres, change `provider` to "postgresql"
+// and point DATABASE_URL at your Postgres instance, then run `npx prisma migrate dev`.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  BUSINESS
+}
+
+enum BusinessType {
+  SALON
+  BEAUTY
+  BARBER
+}
+
+enum SlotStatus {
+  OPEN
+  BOOKED
+  CANCELLED
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model User {
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  passwordHash String
+  role         Role        @default(CUSTOMER)
+  createdAt    DateTime    @default(now())
+  businesses   Business[]
+  bookings     Booking[]
+  favourites   Favourite[]
+}
+
+model Business {
+  id           String       @id @default(cuid())
+  ownerId      String
+  owner        User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name         String
+  slug         String       @unique
+  type         BusinessType
+  description  String       @default("")
+  address      String
+  postcode     String       @default("")
+  area         String       @default("")
+  lat          Float
+  lng          Float
+  logoUrl      String?
+  phone        String?
+  /// JSON: { mon: "09:00-18:00", ..., sun: "closed" }
+  openingHours String       @default("{}")
+  /// Denormalised rating for listing pages; recalculated when reviews are added.
+  ratingAvg    Float        @default(0)
+  ratingCount  Int          @default(0)
+  createdAt    DateTime     @default(now())
+  treatments   Treatment[]
+  slots        Slot[]
+  favourites   Favourite[]
+
+  @@index([ownerId])
+}
+
+model Treatment {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name          String
+  /// One of the CATEGORIES in src/lib/categories.ts
+  category      String
+  durationMins  Int
+  /// Pence
+  standardPrice Int
+  slots         Slot[]
+
+  @@index([businessId])
+  @@index([category])
+}
+
+model Slot {
+  id            String     @id @default(cuid())
+  businessId    String
+  business      Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  treatmentId   String
+  treatment     Treatment  @relation(fields: [treatmentId], references: [id], onDelete: Cascade)
+  startsAt      DateTime
+  durationMins  Int
+  /// Pence
+  originalPrice Int
+  /// Pence (discounted)
+  price         Int
+  stylistName   String?
+  status        SlotStatus @default(OPEN)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  bookings      Booking[]
+
+  @@index([status, startsAt])
+  @@index([businessId, startsAt])
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slotId     String
+  slot       Slot          @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  /// Pence
+  totalPaid  Int
+  status     BookingStatus @default(CONFIRMED)
+  reference  String        @unique
+  paymentRef String?
+  createdAt  DateTime      @default(now())
+  review     Review?
+
+  @@index([userId])
+  @@index([slotId])
+}
+
+model Favourite {
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([userId, businessId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String   @default("")
+  createdAt DateTime @default(now())
+}

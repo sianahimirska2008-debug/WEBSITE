@@ -1,0 +1,47 @@
+import type { Metadata, Viewport } from "next";
+import { Inter, Instrument_Serif } from "next/font/google";
+import "./globals.css";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { Providers } from "@/components/providers";
+import { getCurrentUser } from "@/lib/auth";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: { default: "Gettable: beautiful appointments, for less", template: "%s · Gettable" },
+  description:
+    "Discounted spare appointments at independent salons, beauty studios and barbers near you. Book last-minute slots for less.",
+};
+
+export const viewport: Viewport = { themeColor: "#34483b" };
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const user = await getCurrentUser();
+  return (
+    <html lang="en-GB" className={`${inter.variable} ${instrumentSerif.variable}`}>
+      <body className="flex min-h-dvh flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-adam focus:px-4 focus:py-2 focus:text-on-adam"
+        >
+          Skip to content
+        </a>
+        <Providers>
+          <SiteHeader user={user ? { name: user.name ?? "", role: user.role } : null} />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </Providers>
+      </body>
+    </html>
+  );
+}

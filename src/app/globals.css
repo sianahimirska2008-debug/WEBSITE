@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/*
+ * Gettable design tokens. Change colours/fonts here and every utility
+ * (bg-adam, text-ink, border-line, font-serif, …) follows.
+ */
+@theme {
+  /* Brand */
+  --color-adam: #34483b;          /* Deep Adam Green */
+  --color-adam-hover: #2a3a30;
+  --color-adam-soft: #5b6e61;
+
+  /* Surfaces */
+  --color-canvas: #f6f5f1;        /* page background (soft off-white) */
+  --color-card: #ffffff;
+  --color-sage: #e4e9e2;          /* pale sage tint */
+  --color-sage-light: #ecefe9;
+
+  /* Text */
+  --color-ink: #1c2420;           /* near-black */
+  --color-ink-muted: #545f58;     /* secondary text, 6:1 on canvas */
+  --color-on-adam: #f6f5f1;       /* text on Deep Adam Green */
+
+  /* Lines & states */
+  --color-line: #e3e4de;          /* thin light borders */
+  --color-line-strong: #c9ccc4;
+  --color-danger: #a33a2c;
+  --color-success: #34483b;
+
+  /* Typography */
+  --font-serif: var(--font-instrument-serif), "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Shape */
+  --radius-card: 1.25rem;
+  --radius-field: 0.875rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-serif font-normal tracking-[-0.01em];
+  }
+  ::selection {
+    background: var(--color-sage);
+  }
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid var(--color-adam);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  .on-adam :focus-visible {
+    outline-color: var(--color-on-adam);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+  @apply btn bg-adam text-on-adam hover:bg-adam-hover;
+}
+
+@utility btn-secondary {
+  @apply btn border border-line-strong bg-card text-ink hover:border-ink;
+}
+
+@utility btn-light {
+  @apply btn bg-on-adam text-adam hover:bg-white;
+}
+
+@utility btn-ghost {
+  @apply btn text-ink hover:bg-sage-light;
+}
+
+@utility card {
+  @apply rounded-[var(--radius-card)] border border-line bg-card;
+}
+
+@utility field {
+  @apply w-full rounded-[var(--radius-field)] border border-line-strong bg-card px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted/80 focus:border-adam focus:outline-none focus-visible:outline-2 focus-visible:outline-adam;
+}
+
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-ink;
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility eyebrow {
+  @apply text-xs font-medium uppercase tracking-[0.14em] text-ink-muted;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
