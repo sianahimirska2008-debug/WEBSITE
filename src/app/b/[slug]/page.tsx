@@ -53,7 +53,7 @@ export default async function BusinessPage({ params }: Props) {
     <div className="container-page flow-root pb-12">
 
       {/* Photo placeholders until businesses can upload images */}
-      <ul className="relative -mt-8 grid grid-cols-3 gap-3" aria-label="Photos">
+      <ul data-reveal-stagger="scale" className="relative -mt-8 grid grid-cols-3 gap-3" aria-label="Photos">
         {["Treatment room", "Reception", "Recent work"].map((label, i) => (
           <li
             key={label}
@@ -74,7 +74,7 @@ export default async function BusinessPage({ params }: Props) {
           {slots.length === 0 ? (
             <p className="card mt-5 p-8 text-center text-sm text-ink-muted">No open slots right now. Check back soon.</p>
           ) : (
-            <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+            <ul data-reveal-stagger="scale" className="mt-5 grid gap-4 sm:grid-cols-2">
               {slots.map((s) => (
                 <li key={s.id}>
                   <SlotCard slot={s} />
@@ -84,7 +84,7 @@ export default async function BusinessPage({ params }: Props) {
           )}
         </section>
 
-        <aside className="space-y-4">
+        <aside data-reveal-stagger className="space-y-4">
           <section aria-labelledby="about-title" className="card p-6">
             <h2 id="about-title" className="text-2xl text-ink">
               About

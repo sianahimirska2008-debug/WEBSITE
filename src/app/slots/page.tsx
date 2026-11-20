@@ -154,7 +154,7 @@ export default async function BrowsePage({ searchParams }: { searchParams: Promi
               </p>
             </div>
           ) : (
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <ul data-reveal-stagger="scale" className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {slots.map((slot) => (
                 <li key={slot.id}>
                   <SlotCard slot={slot} />

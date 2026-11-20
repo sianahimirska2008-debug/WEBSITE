@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Providers } from "@/components/providers";
 import { getCurrentUser } from "@/lib/auth";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const instrumentSerif = Instrument_Serif({
@@ -26,7 +27,17 @@ export const viewport: Viewport = { themeColor: "#cfdecb" };
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
   return (
-    <html lang="en-GB" className={`${inter.variable} ${instrumentSerif.variable}`}>
+    <html lang="en-GB" className={`${inter.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Enable scroll animations before first paint, unless the visitor prefers reduced motion.
+            Safety net: if the animation script never starts, show everything after 2.5s. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.classList.add('motion-ok');setTimeout(function(){if(!window.__revealReady)d.classList.remove('motion-ok')},2500)}}catch(e){}",
+          }}
+        />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"
@@ -40,6 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {children}
           </main>
           <SiteFooter />
+          <ScrollReveal />
         </Providers>
       </body>
     </html>

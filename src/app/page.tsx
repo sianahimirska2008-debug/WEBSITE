@@ -44,18 +44,18 @@ export default async function HomePage() {
       <section aria-labelledby="hero-title" className="bg-band text-on-band">
         <div className="container-page pb-12 pt-12 sm:pb-16 sm:pt-20">
         <div className="max-w-4xl">
-          <p className="eyebrow text-on-band-muted">Spare appointments across London</p>
-          <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-on-band sm:text-6xl md:text-7xl">
+          <p className="hero-item eyebrow text-on-band-muted" style={{ "--i": 0 } as React.CSSProperties}>Spare appointments across London</p>
+          <h1 id="hero-title" style={{ "--i": 1 } as React.CSSProperties} className="hero-item mt-4 text-[2.9rem] leading-[1.02] text-on-band sm:text-6xl md:text-7xl">
             Your next appointment, <span className="whitespace-nowrap"><em className="italic text-adam">for less</em>.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-on-band-muted sm:text-lg">
+          <p className="hero-item mt-5 max-w-xl text-base leading-relaxed text-on-band-muted sm:text-lg" style={{ "--i": 2 } as React.CSSProperties}>
             Salons, beauty studios and barbers post their free slots at a discount. You book the one that suits you.
           </p>
         </div>
-        <div className="mt-8 max-w-4xl sm:mt-10">
+        <div className="hero-item mt-8 max-w-4xl sm:mt-10" style={{ "--i": 3 } as React.CSSProperties}>
           <SearchBar />
         </div>
-        <div className="mt-6">
+        <div className="hero-item mt-6" style={{ "--i": 4 } as React.CSSProperties}>
           <h2 className="sr-only">Browse by treatment</h2>
           <CategoryPills onDark />
         </div>
@@ -65,7 +65,7 @@ export default async function HomePage() {
       {/* Available today */}
       <section aria-labelledby="today-title" className="py-14 sm:py-20">
         <div className="container-page">
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex items-end justify-between gap-4" data-reveal>
             <div>
               <h2 id="today-title" className="text-3xl text-ink sm:text-4xl">
                 {showingToday ? (
@@ -88,7 +88,7 @@ export default async function HomePage() {
           {todaySlots.length === 0 ? (
             <p className="card mt-8 p-8 text-center text-ink-muted">No open slots right now. Check back soon.</p>
           ) : (
-            <ul className="no-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
+            <ul data-reveal-stagger="scale" className="no-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-4">
               {todaySlots.map((slot) => (
                 <li key={slot.id} className="w-[82%] shrink-0 snap-start sm:w-auto">
                   <SlotCard slot={slot} />
@@ -105,11 +105,13 @@ export default async function HomePage() {
       {/* How it works */}
       <section aria-labelledby="how-title" className="bg-band py-14 text-on-band sm:py-20">
         <div className="container-page">
+          <div data-reveal>
           <p className="eyebrow text-on-band-muted">How it works</p>
           <h2 id="how-title" className="mt-3 max-w-xl text-3xl text-on-band sm:text-4xl">
             Three steps to a <em className="italic text-adam">better-value</em> appointment
           </h2>
-          <ol className="mt-10 grid gap-4 md:grid-cols-3">
+          </div>
+          <ol data-reveal-stagger="scale" className="mt-10 grid gap-4 md:grid-cols-3">
             {STEPS.map((step, i) => (
               <li key={step.title} className="rounded-[var(--radius-card)] border border-line-on-band bg-white/55 p-6 sm:p-7">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-adam font-serif text-xl text-on-adam" aria-hidden="true">
@@ -129,11 +131,13 @@ export default async function HomePage() {
       {/* Why Gettable */}
       <section aria-labelledby="why-title" className="py-14 sm:py-20">
         <div className="container-page">
+          <div data-reveal>
           <p className="eyebrow">Why Gettable</p>
           <h2 id="why-title" className="mt-3 max-w-xl text-3xl text-ink sm:text-4xl">
             The same great appointment, <em className="italic text-adam">just gettable</em>
           </h2>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          </div>
+          <ul data-reveal-stagger="scale" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {BENEFITS.map((b) => (
               <li key={b.title} className="card p-6">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-adam text-on-adam" aria-hidden="true">
@@ -150,7 +154,7 @@ export default async function HomePage() {
       {/* For businesses */}
       <section aria-labelledby="biz-title" className="bg-sage-deep py-14 sm:py-20">
         <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <div>
+          <div data-reveal>
             <p className="eyebrow">For businesses</p>
             <h2 id="biz-title" className="mt-3 text-3xl text-ink sm:text-5xl">
               Empty chairs, <em className="italic text-adam">filled</em>.
@@ -167,7 +171,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <ul className="grid gap-3">
+          <ul data-reveal-stagger className="grid gap-3">
             {BUSINESS_POINTS.map((p) => (
               <li key={p.title} className="flex gap-4 rounded-[var(--radius-card)] bg-card p-5">
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-adam text-on-adam" aria-hidden="true">
@@ -186,11 +190,13 @@ export default async function HomePage() {
       {/* Testimonials */}
       <section aria-labelledby="testimonials-title" className="py-14 sm:py-20">
         <div className="container-page">
+          <div data-reveal>
           <h2 id="testimonials-title" className="text-3xl text-ink sm:text-4xl">
             What people <em className="italic text-adam">say</em>
           </h2>
           <p className="mt-2 text-sm text-ink-muted">Sample testimonials for illustration. Names and quotes are placeholders.</p>
-          <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          </div>
+          <ul data-reveal-stagger="scale" className="mt-10 grid gap-4 md:grid-cols-3">
             {TESTIMONIALS.map((t) => (
               <li key={t.name} className="card flex flex-col p-6 sm:p-7">
                 <figure className="flex h-full flex-col">
@@ -210,10 +216,10 @@ export default async function HomePage() {
       {/* Closing CTA */}
       <section aria-labelledby="cta-title" className="border-b border-line-on-band bg-band text-on-band">
         <div className="container-page flex flex-col items-start gap-6 py-16 sm:py-20 md:flex-row md:items-center md:justify-between">
-          <h2 id="cta-title" className="max-w-2xl text-4xl leading-tight sm:text-5xl">
+          <h2 id="cta-title" data-reveal className="max-w-2xl text-4xl leading-tight sm:text-5xl">
             Your next appointment is <em className="italic text-adam">already waiting</em>.
           </h2>
-          <div className="flex flex-wrap gap-3">
+          <div data-reveal style={{ "--reveal-delay": "150ms" } as React.CSSProperties} className="flex flex-wrap gap-3">
             <Link href="/slots" className="btn-primary px-6 py-3">
               Find a slot
             </Link>

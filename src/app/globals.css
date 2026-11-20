@@ -138,3 +138,60 @@
   width: 28px;
   height: 28px;
 }
+
+/* ------------------------------------------------------------------
+ * Scroll animations
+ * Only active when <html> has .motion-ok (set before paint, and only
+ * if the visitor hasn't asked for reduced motion). Without JS or with
+ * reduced motion, everything is simply visible.
+ *   data-reveal            fade up
+ *   data-reveal="scale"    fade up with a slight scale (cards, images)
+ *   data-reveal-stagger    children appear one after another
+ *   .hero-item (+ --i)     page-load entrance for the hero, in order
+ * ------------------------------------------------------------------ */
+:root {
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.motion-ok [data-reveal],
+.motion-ok [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.8s var(--ease-out-soft),
+    transform 0.9s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.motion-ok [data-reveal="scale"],
+.motion-ok [data-reveal-stagger="scale"] > * {
+  transform: translate3d(0, 20px, 0) scale(0.965);
+}
+.motion-ok [data-reveal].is-visible,
+.motion-ok [data-reveal-stagger] > .is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.motion-ok .hero-item {
+  animation: hero-rise 1s var(--ease-out-soft) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 80ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ok [data-reveal],
+  .motion-ok [data-reveal-stagger] > *,
+  .motion-ok .hero-item {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

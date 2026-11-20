@@ -44,7 +44,7 @@ export default async function ForBusinessesPage({ searchParams }: { searchParams
               The dashboard is for business accounts. Create one below, or log in with your business email.
             </p>
           )}
-          <section aria-labelledby="pricing-title" className="card p-6 sm:p-8">
+          <section aria-labelledby="pricing-title" data-reveal className="card p-6 sm:p-8">
             <h2 id="pricing-title" className="text-3xl text-ink">
               Simple <em className="italic text-adam">pricing</em>
             </h2>
@@ -74,7 +74,7 @@ export default async function ForBusinessesPage({ searchParams }: { searchParams
             <h2 id="how-title" className="text-3xl text-ink">
               How it <em className="italic text-adam">works</em>
             </h2>
-            <ol className="mt-6 grid gap-4 sm:grid-cols-2">
+            <ol data-reveal-stagger="scale" className="mt-6 grid gap-4 sm:grid-cols-2">
               {steps.map((s, i) => (
                 <li key={s.title} className="card p-6">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-adam font-serif text-lg text-on-adam" aria-hidden="true">
@@ -91,7 +91,7 @@ export default async function ForBusinessesPage({ searchParams }: { searchParams
           </section>
         </div>
 
-        <section id="join" aria-labelledby="join-title" className="card scroll-mt-24 p-6 sm:p-8">
+        <section id="join" aria-labelledby="join-title" data-reveal="scale" className="card scroll-mt-24 p-6 sm:p-8">
           <h2 id="join-title" className="text-3xl text-ink">
             List your <em className="italic text-adam">business</em>
           </h2>
