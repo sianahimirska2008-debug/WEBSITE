@@ -91,6 +91,22 @@ If your server reaches the internet through an HTTPS proxy, also set `STRIPE_HTT
 - Make sure the cron job runs.
 - Review Stripe's terms for your platform and how you show refund/cancellation terms to customers.
 
+## Deploying to Vercel
+
+The repo is set up for Vercel (`vercel.json`). Vercel can't keep a SQLite file, so deployments use **Postgres**: the build (`npm run vercel-build` → `scripts/vercel-build.mjs`) creates a Postgres copy of the Prisma schema, applies it with `prisma db push` (which refuses destructive changes), optionally loads demo data into an empty database, and runs `next build`. Local dev and tests keep using SQLite.
+
+1. Import the GitHub repo in Vercel (framework: Next.js; the build command comes from `vercel.json`).
+2. **Storage → Create Database → Neon** (or Prisma Postgres) and connect it to the project. This sets `DATABASE_URL`.
+3. Environment variables:
+   - `NEXTAUTH_SECRET`: a long random string
+   - `NEXTAUTH_URL` / `APP_URL`: your production URL, e.g. `https://gettable.vercel.app`
+   - `CRON_SECRET`: a long random string (Vercel Cron sends it automatically)
+   - `SEED_DEMO_DATA=true`: optional, loads the demo businesses/slots when the database is empty
+   - Stripe keys and `STRIPE_WEBHOOK_SECRET`: optional; without them the site runs in demo mode
+4. Redeploy. The payment job runs daily via Vercel Cron (Hobby plan limit); on Pro you can change `vercel.json` to every 15 minutes.
+
+Before a real launch, switch to proper Postgres migrations (`prisma migrate`) rather than `db push`, and remove the demo logins.
+
 ## Security notes
 
 - Prices and amounts are always worked out on the server from the database, never taken from the browser.

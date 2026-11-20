@@ -10,7 +10,8 @@
     "seed": "prisma db seed",
     "test": "vitest run",
     "jobs": "tsx scripts/run-payment-jobs.ts",
-    "refund": "tsx scripts/refund-booking.ts"
+    "refund": "tsx scripts/refund-booking.ts",
+    "vercel-build": "node scripts/vercel-build.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

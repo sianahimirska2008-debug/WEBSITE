@@ -9,3 +9,6 @@ prisma/*.db-journal
 prisma/test.db*
 coverage
 .DS_Store
+
+# Generated for Postgres deployments by scripts/vercel-build.mjs
+prisma/postgres/
