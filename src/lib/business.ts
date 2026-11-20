@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma as defaultPrisma } from "./db";
 import { DomainError } from "./errors";
 import { isCategory } from "./categories";
+import { getPaymentProvider } from "./payments";
 
 /**
  * Every business-side mutation goes through these helpers, which check
@@ -51,7 +52,11 @@ function validate(input: SlotInput, now: Date) {
 
 export async function createSlot(userId: string, businessId: string, input: SlotInput, opts: { db?: Db; now?: Date } = {}) {
   const db = opts.db ?? defaultPrisma;
-  await assertOwnsBusiness(userId, businessId, db);
+  const business = await assertOwnsBusiness(userId, businessId, db);
+  // With real payments, a business must be able to receive payouts before selling slots.
+  if (getPaymentProvider().requiresConnectedAccount && !business.payoutsEnabled) {
+    throw new DomainError("INVALID_STATE", "Connect your Stripe account before posting slots, so we can pay you.");
+  }
   const data = validate(input, opts.now ?? new Date());
   const treatment = await db.treatment.findUnique({ where: { id: data.treatmentId } });
   if (!treatment || treatment.businessId !== businessId) throw new DomainError("VALIDATION", "Unknown treatment.");
@@ -78,27 +83,14 @@ export async function removeSlot(userId: string, slotId: string, opts: { db?: Db
   const db = opts.db ?? defaultPrisma;
   await assertOwnsSlot(userId, slotId, db);
   const res = await db.slot.updateMany({ where: { id: slotId, status: "OPEN" }, data: { status: "CANCELLED" } });
-  if (res.count !== 1) throw new DomainError("INVALID_STATE", "Booked slots can't be removed.");
-}
-
-export async function setBookingOutcome(
-  userId: string,
-  bookingId: string,
-  outcome: "COMPLETED" | "NO_SHOW",
-  opts: { db?: Db } = {},
-) {
-  const db = opts.db ?? defaultPrisma;
-  const booking = await db.booking.findUnique({ where: { id: bookingId }, include: { slot: { include: { business: true } } } });
-  if (!booking || booking.slot.business.ownerId !== userId) throw new DomainError("FORBIDDEN", "You can't manage this booking.");
-  if (booking.status !== "CONFIRMED") throw new DomainError("INVALID_STATE", "This booking has already been closed.");
-  return db.booking.update({ where: { id: bookingId }, data: { status: outcome } });
+  if (res.count !== 1) throw new DomainError("INVALID_STATE", "Booked slots, or slots a customer is paying for right now, can't be removed.");
 }
 
 /** Bookings for the owner's business only. */
 export async function listBusinessBookings(userId: string, opts: { db?: Db } = {}) {
   const db = opts.db ?? defaultPrisma;
   return db.booking.findMany({
-    where: { slot: { business: { ownerId: userId } } },
+    where: { slot: { business: { ownerId: userId } }, status: { notIn: ["PENDING_PAYMENT", "EXPIRED"] } },
     include: { user: { select: { name: true, email: true } }, slot: { include: { treatment: true } } },
     orderBy: { slot: { startsAt: "asc" } },
   });

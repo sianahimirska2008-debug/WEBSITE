@@ -24,15 +24,52 @@ enum BusinessType {
 
 enum SlotStatus {
   OPEN
+  /// Temporarily reserved while a customer completes payment (see Slot.heldUntil)
+  HELD
   BOOKED
   CANCELLED
 }
 
 enum BookingStatus {
+  /// Checkout started; slot is HELD until payment succeeds or the session expires
+  PENDING_PAYMENT
   CONFIRMED
   COMPLETED
   CANCELLED
   NO_SHOW
+  /// Checkout was abandoned or expired before payment
+  EXPIRED
+}
+
+/// Money owed to the business (85%) for a booking.
+enum PayoutStatus {
+  /// Not due yet (booking not completed / no-show)
+  NOT_DUE
+  /// Due, but the business hasn't finished Stripe onboarding (or a dispute is open)
+  ON_HOLD
+  /// Transfer is being created
+  PROCESSING
+  /// Transfer created to the connected account
+  PAID
+  /// Transfer attempt failed; retried by the payouts job
+  FAILED
+  /// Transfer was reversed (refund after completion)
+  REVERSED
+  /// Nothing will be paid (booking cancelled and refunded)
+  NONE
+}
+
+enum RefundStatus {
+  NONE
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+enum CancelledBy {
+  CUSTOMER
+  BUSINESS
+  PLATFORM
 }
 
 model User {
@@ -48,29 +85,34 @@ model User {
 }
 
 model Business {
-  id           String       @id @default(cuid())
-  ownerId      String
-  owner        User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  name         String
-  slug         String       @unique
-  type         BusinessType
-  description  String       @default("")
-  address      String
-  postcode     String       @default("")
-  area         String       @default("")
-  lat          Float
-  lng          Float
-  logoUrl      String?
-  phone        String?
+  id                    String       @id @default(cuid())
+  ownerId               String
+  owner                 User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name                  String
+  slug                  String       @unique
+  type                  BusinessType
+  description           String       @default("")
+  address               String
+  postcode              String       @default("")
+  area                  String       @default("")
+  lat                   Float
+  lng                   Float
+  logoUrl               String?
+  phone                 String?
   /// JSON: { mon: "09:00-18:00", ..., sun: "closed" }
-  openingHours String       @default("{}")
+  openingHours          String       @default("{}")
   /// Denormalised rating for listing pages; recalculated when reviews are added.
-  ratingAvg    Float        @default(0)
-  ratingCount  Int          @default(0)
-  createdAt    DateTime     @default(now())
-  treatments   Treatment[]
-  slots        Slot[]
-  favourites   Favourite[]
+  ratingAvg             Float        @default(0)
+  ratingCount           Int          @default(0)
+  /// Stripe connected account (Accounts v2, recipient configuration)
+  stripeAccountId       String?      @unique
+  /// True once the stripe_transfers capability is active, i.e. we can pay this business
+  payoutsEnabled        Boolean      @default(false)
+  stripeStatusCheckedAt DateTime?
+  createdAt             DateTime     @default(now())
+  treatments            Treatment[]
+  slots                 Slot[]
+  favourites            Favourite[]
 
   @@index([ownerId])
 }
@@ -105,6 +147,8 @@ model Slot {
   price         Int
   stylistName   String?
   status        SlotStatus @default(OPEN)
+  /// When status is HELD: the hold lapses at this time
+  heldUntil     DateTime?
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   bookings      Booking[]
@@ -114,21 +158,51 @@ model Slot {
 }
 
 model Booking {
-  id         String        @id @default(cuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  slotId     String
-  slot       Slot          @relation(fields: [slotId], references: [id], onDelete: Cascade)
-  /// Pence
-  totalPaid  Int
-  status     BookingStatus @default(CONFIRMED)
-  reference  String        @unique
-  paymentRef String?
-  createdAt  DateTime      @default(now())
-  review     Review?
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slotId            String
+  slot              Slot          @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  /// Pence charged to the customer
+  totalPaid         Int
+  status            BookingStatus @default(CONFIRMED)
+  reference         String        @unique
+  /// Provider payment id (Stripe PaymentIntent id, or mock id)
+  paymentRef        String?
+  /// Stripe Checkout Session id
+  checkoutSessionId String?       @unique
+  /// Stripe Charge id; transfers are tied to it with source_transaction
+  chargeId          String?
+  /// GETTABLE's commission in pence, fixed when payment is confirmed
+  commission        Int           @default(0)
+  /// Business share in pence (totalPaid - commission)
+  businessAmount    Int           @default(0)
+  payoutStatus      PayoutStatus  @default(NOT_DUE)
+  transferId        String?
+  payoutError       String?
+  paidOutAt         DateTime?
+  refundStatus      RefundStatus  @default(NONE)
+  refundedAmount    Int           @default(0)
+  refundId          String?
+  disputeStatus     String?
+  cancelledBy       CancelledBy?
+  cancelledAt       DateTime?
+  completedAt       DateTime?
+  autoCompleted     Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
+  review            Review?
 
   @@index([userId])
   @@index([slotId])
+  @@index([status, payoutStatus])
+}
+
+/// Stripe webhook events already handled (idempotency).
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
 }
 
 model Favourite {

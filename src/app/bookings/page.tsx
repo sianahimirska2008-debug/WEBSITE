@@ -25,7 +25,7 @@ export default async function BookingsPage({ searchParams }: { searchParams: Pro
   const now = new Date();
 
   const bookings = await prisma.booking.findMany({
-    where: { userId: user.id },
+    where: { userId: user.id, status: { notIn: ["PENDING_PAYMENT", "EXPIRED"] } },
     include: { slot: { include: { treatment: true, business: true } } },
     orderBy: { slot: { startsAt: "asc" } },
   });
@@ -139,6 +139,15 @@ function BookingRow({ booking: b, now, highlight = false }: { booking: BookingWi
           <p className="mt-1 text-xs text-ink-muted">
             Ref <span className="font-mono text-ink">{b.reference}</span> · Paid {formatPrice(b.totalPaid)} · {b.slot.business.address}, {b.slot.business.postcode}
           </p>
+          {b.status === "CANCELLED" && (
+            <p className="mt-1 text-xs text-ink">
+              {b.refundStatus === "SUCCEEDED"
+                ? `Refunded ${formatPrice(b.refundedAmount)}${b.cancelledBy === "BUSINESS" ? " (cancelled by the business)" : ""}. Refunds take 5 to 10 days to reach your account.`
+                : b.refundStatus === "PENDING" || b.refundStatus === "FAILED"
+                  ? "Refund in progress."
+                  : null}
+            </p>
+          )}
         </div>
       </div>
       {isUpcoming && (

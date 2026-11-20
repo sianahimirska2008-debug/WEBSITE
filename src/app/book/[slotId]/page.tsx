@@ -7,7 +7,7 @@ import { formatPrice, percentOff } from "@/lib/money";
 import { formatLongDate } from "@/lib/time";
 import { CANCELLATION_WINDOW_HOURS } from "@/lib/bookings";
 import { PageBand } from "@/components/page-band";
-import { CheckoutForm } from "@/components/checkout-form";
+import { CheckoutPanel } from "@/components/checkout-panel";
 import { BusinessAvatar } from "@/components/business-avatar";
 
 export const metadata: Metadata = { title: "Checkout" };
@@ -18,7 +18,8 @@ export default async function CheckoutPage({ params }: { params: Promise<{ slotI
   const slot = await prisma.slot.findUnique({ where: { id: slotId }, include: { treatment: true, business: true } });
   if (!slot) notFound();
 
-  const bookable = slot.status === "OPEN" && slot.startsAt > new Date();
+  // HELD slots may be this customer's own unfinished checkout; startCheckout decides.
+  const bookable = (slot.status === "OPEN" || slot.status === "HELD") && slot.startsAt > new Date();
   const off = percentOff(slot.originalPrice, slot.price);
 
   return (
@@ -52,7 +53,7 @@ export default async function CheckoutPage({ params }: { params: Promise<{ slotI
                 </Link>
               </div>
             ) : (
-              <CheckoutForm slotId={slot.id} priceLabel={formatPrice(slot.price)} defaultName={user.name ?? ""} />
+              <CheckoutPanel slotId={slot.id} priceLabel={formatPrice(slot.price)} defaultName={user.name ?? ""} />
             )}
           </div>
         </section>

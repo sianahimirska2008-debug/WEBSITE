@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { PrismaClient, type BusinessType } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { splitPayment } from "../src/lib/commission";
 
 const prisma = new PrismaClient();
 
@@ -102,6 +103,7 @@ function discountedPrice(original: number): number {
 
 async function main() {
   console.log("Clearing existing data…");
+  await prisma.stripeEvent.deleteMany();
   await prisma.review.deleteMany();
   await prisma.booking.deleteMany();
   await prisma.favourite.deleteMany();
@@ -210,7 +212,7 @@ async function main() {
     },
   });
   await prisma.booking.create({
-    data: { userId: customer.id, slotId: upcomingSlot.id, totalPaid: upcomingSlot.price, reference: "GT-DEMO01", paymentRef: "mock_seed_1" },
+    data: { userId: customer.id, slotId: upcomingSlot.id, totalPaid: upcomingSlot.price, ...splitPayment(upcomingSlot.price), reference: "GT-DEMO01", paymentRef: "mock_seed_1" },
   });
 
   // A booking later today for the demo business dashboard (if there's time left today).
@@ -227,7 +229,52 @@ async function main() {
     },
   });
   await prisma.booking.create({
-    data: { userId: customer.id, slotId: todaySlot.id, totalPaid: todaySlot.price, reference: "GT-DEMO02", paymentRef: "mock_seed_2" },
+    data: { userId: customer.id, slotId: todaySlot.id, totalPaid: todaySlot.price, ...splitPayment(todaySlot.price), reference: "GT-DEMO02", paymentRef: "mock_seed_2" },
+  });
+
+  // Yesterday's appointment at the demo business, waiting to be marked completed / no-show.
+  const yesterdaySlot = await prisma.slot.create({
+    data: {
+      businessId: demoBusiness.id,
+      treatmentId: demoBusiness.treatments[1].id,
+      startsAt: londonTime(-1, 15, 30),
+      durationMins: demoBusiness.treatments[1].durationMins,
+      originalPrice: demoBusiness.treatments[1].standardPrice,
+      price: discountedPrice(demoBusiness.treatments[1].standardPrice),
+      status: "BOOKED",
+    },
+  });
+  await prisma.booking.create({
+    data: { userId: customer.id, slotId: yesterdaySlot.id, totalPaid: yesterdaySlot.price, ...splitPayment(yesterdaySlot.price), reference: "GT-DEMO03", paymentRef: "mock_seed_3", chargeId: "mock_ch_seed_3" },
+  });
+
+  // A completed, paid-out booking at the demo business (for the earnings page).
+  const lastWeekSlot = await prisma.slot.create({
+    data: {
+      businessId: demoBusiness.id,
+      treatmentId: demoBusiness.treatments[0].id,
+      startsAt: londonTime(-4, 11, 0),
+      durationMins: demoBusiness.treatments[0].durationMins,
+      originalPrice: demoBusiness.treatments[0].standardPrice,
+      price: discountedPrice(demoBusiness.treatments[0].standardPrice),
+      status: "BOOKED",
+    },
+  });
+  await prisma.booking.create({
+    data: {
+      userId: customer.id,
+      slotId: lastWeekSlot.id,
+      totalPaid: lastWeekSlot.price,
+      ...splitPayment(lastWeekSlot.price),
+      reference: "GT-DEMO04",
+      status: "COMPLETED",
+      completedAt: londonTime(-4, 12, 0),
+      paymentRef: "mock_seed_4",
+      chargeId: "mock_ch_seed_4",
+      payoutStatus: "PAID",
+      transferId: "mock_tr_seed_4",
+      paidOutAt: londonTime(-4, 12, 0),
+    },
   });
 
   for (const [i, daysAgo] of [6, 14].entries()) {
@@ -249,8 +296,11 @@ async function main() {
         userId: customer.id,
         slotId: slot.id,
         totalPaid: slot.price,
+        ...splitPayment(slot.price),
         reference: `GT-PAST0${i + 1}`,
         status: "COMPLETED",
+        payoutStatus: "PAID",
+        transferId: `mock_tr_seed_past_${i}`,
         paymentRef: `mock_seed_past_${i}`,
         createdAt: londonTime(-daysAgo - 1, 10, 0),
       },

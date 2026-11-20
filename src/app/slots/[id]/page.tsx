@@ -241,7 +241,11 @@ function BookingPanel({
         </Link>
       ) : (
         <div className="mt-6 rounded-[var(--radius-field)] bg-white/50 p-4 text-sm text-on-band" role="status">
-          {status === "BOOKED" ? "This slot has just been booked." : "This slot is no longer available."}{" "}
+          {status === "BOOKED"
+            ? "This slot has just been booked."
+            : status === "HELD"
+              ? "Someone is booking this slot right now. If they don't finish, it reopens within 35 minutes."
+              : "This slot is no longer available."}{" "}
           <Link href="/slots" className="font-medium underline">
             Find another slot
           </Link>
