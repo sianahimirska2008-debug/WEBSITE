@@ -46,7 +46,7 @@ export default async function HomePage() {
         <div className="max-w-4xl">
           <p className="eyebrow text-on-band-muted">Spare appointments across London</p>
           <h1 id="hero-title" className="mt-4 text-[2.9rem] leading-[1.02] text-on-band sm:text-6xl md:text-7xl">
-            Beautiful appointments, <span className="whitespace-nowrap"><em className="italic text-adam">for less</em>.</span>
+            Your next appointment, <span className="whitespace-nowrap"><em className="italic text-adam">for less</em>.</span>
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-on-band-muted sm:text-lg">
             Salons, beauty studios and barbers post their free slots at a discount. You book the one that suits you.

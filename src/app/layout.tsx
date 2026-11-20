@@ -16,7 +16,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Gettable: beautiful appointments, for less", template: "%s · Gettable" },
+  title: { default: "Gettable: your next appointment, for less", template: "%s · Gettable" },
   description:
     "Discounted spare appointments at independent salons, beauty studios and barbers near you. Book last-minute slots for less.",
 };
